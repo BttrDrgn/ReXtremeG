@@ -3,6 +3,47 @@
 
 namespace rxg
 {
+    //  Temporary
+    int graphics_device_index, parsed_window_height, parsed_window_width, window_height, window_width;
+    double height_ratio, width_ratio, width_half, height_half;
+
+    int CommandLineParse(char* lpCmdLine)
+    {
+        int result;
+        int parsed;
+        char* i;
+        int v4;
+
+        v4 = 0;
+        for (i = strtok(lpCmdLine, " -"); i; i = strtok(0, " -"))
+        {
+            if (sscanf(i, "d%d", &parsed) == 1)
+            {
+                graphics_device_index = parsed;
+            }
+            else if (sscanf(i, "w%d", &parsed) == 1)
+            {
+                parsed_window_width = parsed;
+            }
+            else if (sscanf(i, "h%d", &parsed) == 1)
+            {
+                parsed_window_height = parsed;
+            }
+        }
+
+        window_width = parsed_window_width;
+        window_height = parsed_window_height;
+
+        height_ratio = (parsed_window_width / 640);
+        width_ratio = (parsed_window_height / 480);
+
+        width_half = (parsed_window_width / 2);
+        result = parsed_window_height / 2;
+        height_half = (parsed_window_height / 2);
+
+        return result;
+    }
+
 	void Init()
 	{
 
@@ -32,6 +73,8 @@ int WinMain(
     {
         first_launch = 0;
     }
+
+    rxg::CommandLineParse(lpCmdLine);
 
     if (winmain_once)
     {
