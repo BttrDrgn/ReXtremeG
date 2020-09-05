@@ -15,10 +15,6 @@ workspace "RXG"
 	architecture "x86"
 	warnings "extra"
 
-	syslibdirs {
-	
-	}
-
 	includedirs {
 		".\\src\\",
 	}
@@ -32,7 +28,6 @@ workspace "RXG"
 	flags {
 		"no64bitchecks",
 		"shadowedvariables",
-		"noincrementallink",
 		"undefinedidentifiers",
 		"multiprocessorcompile",
 	}
@@ -52,12 +47,6 @@ workspace "RXG"
 		"Debug",
 		"Release",
 	}
-	
-	--[[
-	postbuildcommands {
-		"if \"%COMPUTERNAME%\" == \"<PC-NAME>\" ( copy /y \"$(TargetPath)\" \"<PATH\\TO\\FOLDER\\\" )",
-	}
-	--]]
 
 	configuration "Debug"
 		defines "DEBUG"
@@ -83,10 +72,6 @@ workspace "RXG"
 			".\\src\\**.c",
 			".\\src\\**.hpp",
 			".\\src\\**.cpp",
-		}
-		
-		links {
-		
 		}
 
 		includedirs {
