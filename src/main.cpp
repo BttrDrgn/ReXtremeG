@@ -11,11 +11,8 @@ namespace rxg
     {
         int result;
         int parsed;
-        char* i;
-        int v4;
 
-        v4 = 0;
-        for (i = strtok(lpCmdLine, " -"); i; i = strtok(0, " -"))
+        for (char* i = strtok(lpCmdLine, " -"); i; i = strtok(0, " -"))
         {
             if (sscanf(i, "d%d", &parsed) == 1)
             {
