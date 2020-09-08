@@ -23,5 +23,5 @@ template<typename T> constexpr auto get_variable(std::uintptr_t address) -> T
 
 template<typename T> constexpr auto set_variable(std::uintptr_t address, T value) -> T
 {
-    *reinterpret_cast<T*>(address) = value;
+    return *reinterpret_cast<T*>(address) = value;
 }

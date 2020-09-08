@@ -66,12 +66,7 @@ workspace "ReXtremeG"
 		pchsource "src/stdafx.cpp"
 		forceincludes "stdafx.hpp"
 
-		files {
-			".\\src\\**.h",
-			".\\src\\**.c",
-			".\\src\\**.hpp",
-			".\\src\\**.cpp",
-		}
+		files ".\\src\\**"
 
 		includedirs {
 			".\\src\\",

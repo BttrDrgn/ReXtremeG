@@ -5,10 +5,12 @@
 */
 
 #include <main.hpp>
+#include <utils/console/console.hpp>
 
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <shellapi.h>
 
 #undef min
 #undef max
@@ -132,11 +134,16 @@ auto load_imports(const HMODULE target, const HMODULE source) -> void
     
 auto manual_map() -> void
 {
-    std::ifstream bin("xg2pc.exe", std::ifstream::binary);
+    char* bin_name = "xg2pc.exe";
+    std::ifstream bin(bin_name, std::ifstream::binary);
 
     if (!bin.is_open())
     {
         return;
+    }
+    else
+    {
+        PRINT_DEBUG("%s loaded succesfully", bin_name);
     }
 
     bin.seekg(0, bin.end);
@@ -149,6 +156,7 @@ auto manual_map() -> void
     bin.read(reinterpret_cast<char*>(&executable_buffer[0]), binary_size);
 
     const auto module = GetModuleHandleA(nullptr);
+
     const auto module_dos_header = reinterpret_cast<IMAGE_DOS_HEADER*>(module);
     const auto module_nt_headers = reinterpret_cast<IMAGE_NT_HEADERS*>(reinterpret_cast<uint32_t>(module) + module_dos_header->e_lfanew);
 
@@ -159,31 +167,6 @@ auto manual_map() -> void
     load_sections(module, source);
     load_imports(module, source);
 
-    if (source_nt_headers->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_TLS].Size)
-    {
-        if (!module_nt_headers->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_TLS].VirtualAddress)
-        {
-            __debugbreak();
-        }
-
-        const auto target_tls = reinterpret_cast<PIMAGE_TLS_DIRECTORY>(reinterpret_cast<uint32_t>(module) + module_nt_headers->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_TLS].VirtualAddress);
-        const auto source_tls = reinterpret_cast<PIMAGE_TLS_DIRECTORY>(reinterpret_cast<uint32_t>(module) + source_nt_headers->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_TLS].VirtualAddress);
-
-        const auto source_tls_size = source_tls->EndAddressOfRawData - source_tls->StartAddressOfRawData;
-        const auto target_tls_size = target_tls->EndAddressOfRawData - target_tls->StartAddressOfRawData;
-
-        const auto target_tls_index = *reinterpret_cast<DWORD*>(target_tls->AddressOfIndex);
-        const auto source_tls_index = *reinterpret_cast<DWORD*>(source_tls->AddressOfIndex);
-        *reinterpret_cast<DWORD*>(target_tls->AddressOfIndex) += source_tls_index;
-
-        DWORD old_protect;
-        VirtualProtect(PVOID(target_tls->StartAddressOfRawData), source_tls_size, PAGE_READWRITE, &old_protect);
-
-        const auto tls_base = *reinterpret_cast<LPVOID*>(__readfsdword(0x2C) + (sizeof(std::uintptr_t) * source_tls_index) + (sizeof(std::uintptr_t) * target_tls_index));
-        std::memmove(tls_base, PVOID(source_tls->StartAddressOfRawData), source_tls_size);
-        std::memmove(PVOID(target_tls->StartAddressOfRawData), PVOID(source_tls->StartAddressOfRawData), source_tls_size);
-    }
-
     DWORD old_protect;
     VirtualProtect(module_nt_headers, 0x1000, PAGE_EXECUTE_READWRITE, &old_protect);
 
@@ -191,9 +174,12 @@ auto manual_map() -> void
     std::memmove(module_nt_headers, source_nt_headers, sizeof(IMAGE_NT_HEADERS) + (module_nt_headers->FileHeader.NumberOfSections * (sizeof(IMAGE_SECTION_HEADER))));
 }
 
+
 int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
+    rxg::utils::console::init();
     manual_map();
 
+    fix_function(0x0056063A, (unsigned long)&rxg::main);
     call_function<void()>(0x00560500)();
 }

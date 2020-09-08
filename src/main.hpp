@@ -1,4 +1,9 @@
 namespace rxg
 {
-	auto main() -> void;
+	namespace win_main
+	{
+		static LPSTR lp_cmd_line;
+	}
+
+	auto main() -> int;
 }
