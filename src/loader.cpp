@@ -1,7 +1,7 @@
 /*
-	Based on the IW4x2 loader
+	Based on the IW4x2 loader; Licensed under GPLv3
 
-    No TLS
+	- Removed TLS support
 */
 
 #include <main.hpp>
