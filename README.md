@@ -8,7 +8,7 @@ Please follow the [Conventional Commits v1.0.0](https://www.conventionalcommits.
 
 # Compatibility
 We will be using the Original 1999 CD Retail exe rather than the Steam release, however both version will work fine.
-Please download the patched xg2pc.exe in the [patched-bin](https://github.com/BttrDrgn/ReXtremeG/tree/master/patched-bin) folder regardless of which version you are using.
+Please download the patched xg2pc.exe in the [patched-bins](https://github.com/BttrDrgn/ReXtremeG/tree/master/patched-bin) folder regardless of which version you are using.
 The patched exe fixes some issues with operating systems from Windows XP to Windows 10.
 
 If you do **NOT** have the Steam version and are using modern hardware, please refer to the [PCGamingWiki for Extreme-G 2](https://www.pcgamingwiki.com/wiki/Extreme-G_2#Rendering_glitches) regarding dgVoodoo usage.
