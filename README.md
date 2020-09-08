@@ -18,4 +18,14 @@ Throwback Entertainment owns full rights to the Extreme-G series and this projec
 
 You will require a legally purchased version of either the [Steam release](https://store.steampowered.com/app/582260/ExtremeG_2/) or the PC retail disc from 1999.
 
+ReXtremeG is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+ReXtremeG is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
 For more information on the project licensing, please review the GNU General Public License in the [LICENSE](https://github.com/BttrDrgn/ReXtremeG/blob/master/LICENSE) file or the [official website](https://www.gnu.org/licenses/gpl-3.0.en.html).
