@@ -1,4 +1,4 @@
-workspace "RXG"
+workspace "ReXtremeG"
 	location ".\\build\\"
 	startproject "ReXtremeG"
 
@@ -15,17 +15,15 @@ workspace "RXG"
 	architecture "x86"
 	warnings "extra"
 
-	includedirs {
-		".\\src\\",
-	}
-
 	buildoptions {
 		"/Zm200",
 		"/utf-8",
 		"/std:c++latest",
+		"/bigobj",
 	}
 
 	flags {
+		"noincrementallink",
 		"no64bitchecks",
 		"shadowedvariables",
 		"undefinedidentifiers",
@@ -66,6 +64,7 @@ workspace "RXG"
 
 		pchheader "stdafx.hpp"
 		pchsource "src/stdafx.cpp"
+		forceincludes "stdafx.hpp"
 
 		files {
 			".\\src\\**.h",
@@ -77,3 +76,5 @@ workspace "RXG"
 		includedirs {
 			".\\src\\",
 		}
+		
+		linkoptions "/NXCOMPAT:NO /IGNORE:4254 /DYNAMICBASE:NO /SAFESEH:NO /LARGEADDRESSAWARE /LAST:.main"
