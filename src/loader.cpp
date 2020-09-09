@@ -5,15 +5,13 @@
 */
 
 #include <main.hpp>
+#include <misc.hpp>
 #include <utils/console/console.hpp>
 
 #include <fstream>
 #include <vector>
 #include <algorithm>
 #include <shellapi.h>
-
-#undef min
-#undef max
 
 #define BINARY_PAYLOAD_SIZE 0x20000000
 
@@ -174,12 +172,16 @@ auto manual_map() -> void
     std::memmove(module_nt_headers, source_nt_headers, sizeof(IMAGE_NT_HEADERS) + (module_nt_headers->FileHeader.NumberOfSections * (sizeof(IMAGE_SECTION_HEADER))));
 }
 
+void do_fix_funcs()
+{
+    fix_function(0x0056063A, (unsigned long)&rxg::main);
+    fix_function(0x005568E6, (unsigned long)&rxg::command_parser);
+}
 
 int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
     rxg::utils::console::init();
     manual_map();
-
-    fix_function(0x0056063A, (unsigned long)&rxg::main);
+    do_fix_funcs();
     call_function<void()>(0x00560500)();
 }
